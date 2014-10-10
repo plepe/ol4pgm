@@ -94,6 +94,25 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
       })}));
     }
 
+    // style-element "point"
+    if(result['final-icon-image']) {
+      styles.push(new ol.style.Style({
+        "zIndex": parseFloat(result['point-layer'] || result['layer']) * 400000 + 30000 + parseFloat(result['point-z-index'] || result['z-index']),
+        "image": new ol.style.Icon({
+          "src": escape(result['final-icon-image']),
+          "rotation": parseFloat(result['icon-rotation']) * (Math.PI / 180.0)
+      })}));
+    }
+
+    if(result['final-symbol-image']) {
+      styles.push(new ol.style.Style({
+        "zIndex": parseFloat(result['point-layer'] || result['layer']) * 400000 + 30000 + parseFloat(result['point-z-index'] || result['z-index']),
+        "image": new ol.style.Icon({
+          "src": escape(result['final-symbol-image']),
+          "rotation": parseFloat(result['symbol-rotation']) * (Math.PI / 180.0)
+      })}));
+    }
+
     // style-element "point-text"
     if(result['text']) {
       styles.push(new ol.style.Style({
@@ -102,7 +121,10 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
           "text": result['text'],
           "font": result['font-size'] + "px " + result['font-family'],
           "offsetY": result['text-offset'],
-          "textAlign": result['text-position'],
+          "textAlign": result['text-anchor-horizontal'] == "middle" ? "center" : result['text-anchor-horizontal'],
+          "textBaseline": (parseFloat(result['text-offset']) > 0 ? "top" :
+                          (parseFloat(result['text-offset']) < 0 ? "bottom" :
+                           "middle")),
           "fill": get_style('fill', {
             color: result['text-color']
           }),
