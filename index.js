@@ -1,4 +1,21 @@
 var map;
+var cached_styles = {}
+
+function get_style(type, params) {
+  var id = type;
+  for (var k in params) {
+    id += "|"+ k + "|" + params[k];
+  }
+
+  if (!cached_styles[id]) {
+    if (type == 'stroke')
+      cached_styles[id] = new ol.style.Stroke(params);
+    if (type == 'fill')
+      cached_styles[id] = new ol.style.Fill(params);
+  }
+
+  return cached_styles[id];
+}
 
 function styleFunction(feature, resolution) {
   styles = [];
@@ -13,7 +30,7 @@ function styleFunction(feature, resolution) {
     if(result['fill-color']) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['fill-layer'] || result['layer']) * 100000 + 00000 + parseFloat(result['fill-z-index'] || result['z-index']),
-        "fill": new ol.style.Fill({
+        "fill": get_style('fill', {
           "color": result['fill-color']
       })}));
     }
@@ -22,7 +39,7 @@ function styleFunction(feature, resolution) {
     if(result['casing-width']) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['casing-layer'] || result['layer']) * 100000 + 10000 + parseFloat(result['casing-z-index'] || result['z-index']),
-        "stroke": new ol.style.Stroke({
+        "stroke": get_style('stroke', {
           "color": result['casing-color'],
           "width": result['final-casing-width'],
           "lineCap": result['casing-linecap'],
@@ -36,7 +53,7 @@ function styleFunction(feature, resolution) {
     if(result['width']) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['line-layer'] || result['layer']) * 100000 + 30000 + parseFloat(result['line-z-index'] || result['z-index']),
-        "stroke": new ol.style.Stroke({
+        "stroke": get_style('stroke', {
           "color": result['color'],
           "width": result['width'],
           "lineCap": result['linecap'],
@@ -55,10 +72,10 @@ function styleFunction(feature, resolution) {
           "font": result['font-size'] + "px " + result['font-family'],
           "offsetY": result['text-offset'],
           "textAlign": result['text-position'],
-          "fill": new ol.style.Stroke({
+          "fill": get_style('fill', {
             color: result['text-color']
           }),
-          "stroke": new ol.style.Stroke({
+          "stroke": get_style('stroke', {
             color: result['text-halo-color'],
             width: parseFloat(result['text-halo-radius']) * 3,
           })
