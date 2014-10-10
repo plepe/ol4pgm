@@ -4,9 +4,20 @@ function ol4pgmLayer(options) {
   this.options = options;
 
   this.source = new ol.source.TileVector({
-    format: new ol.format.GeoJSON({
-    }),
     url: this.options.url,
+    attributions: this.options.attributions,
+    defaultProjection: this.options.defaultProjection,
+    format: this.options.format,
+    logo: this.options.logo,
+    object: this.options.object,
+    projection: this.options.projection,
+    tileGrid: this.options.tileGrid,
+    tileUrlFunction: this.options.tileUrlFunction,
+    urls: this.options.urls,
+    format: new ol.format.GeoJSON({
+      defaultDataProjection: this.options.defaultDataProjection,
+      geometryName: this.options.geometryName
+    }),
     tileGrid: new ol.tilegrid.XYZ({
       minZoom: this.options.minZoom,
       maxZoom: this.options.maxZoom,
