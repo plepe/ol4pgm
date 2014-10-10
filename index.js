@@ -86,6 +86,24 @@ function styleFunction(feature, resolution) {
   return styles;
 }
 
+// from https://groups.google.com/forum/#!topic/ol3-dev/YWJHcKC6-O8
+function map_click(e) {
+  var pixel = map.getEventPixel(e.originalEvent);
+
+  var feature_list = {};
+
+  map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+    if (layer.get("visible") == true){ // Is the current layer visible ?
+      var id = feature.getProperties()['osm:id'];
+
+      if(!feature_list[id])
+        feature_list[id] = feature.getProperties();
+    }
+  });
+
+  // alert(feature_list);
+}
+
 function init() {
   tile_source = new ol.source.TileVector({
     format: new ol.format.GeoJSON({
@@ -115,6 +133,8 @@ function init() {
       zoom: 16
     })
   });
+
+  // map.on('singleclick', map_click);
 }
 
 window.onload = init;
