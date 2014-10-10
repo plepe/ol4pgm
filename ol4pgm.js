@@ -1,5 +1,25 @@
-var map;
 var cached_styles = {}
+
+function ol4pgmLayer(options) {
+  this.options = options;
+
+  this.source = new ol.source.TileVector({
+    format: new ol.format.GeoJSON({
+    }),
+    url: this.options.url,
+    tileGrid: new ol.tilegrid.XYZ({
+      minZoom: this.options.minZoom,
+      maxZoom: this.options.maxZoom,
+      extent: this.options.extent,
+      tileSize: this.options.tileSize
+    }),
+  });
+
+  this.layer = new ol.layer.Vector({
+    source: this.source,
+    style: this.styleFunction.bind(this)
+  });
+}
 
 function get_style(type, params) {
   var id = type;
@@ -17,7 +37,7 @@ function get_style(type, params) {
   return cached_styles[id];
 }
 
-function styleFunction(feature, resolution) {
+ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
   styles = [];
 
   if(!feature.get("results"))
@@ -88,6 +108,7 @@ function styleFunction(feature, resolution) {
 
 // from https://groups.google.com/forum/#!topic/ol3-dev/YWJHcKC6-O8
 function map_click(e) {
+  return;
   var pixel = map.getEventPixel(e.originalEvent);
 
   var feature_list = [];
@@ -103,38 +124,3 @@ function map_click(e) {
 
   alert(JSON.stringify(feature_list));
 }
-
-function init() {
-  tile_source = new ol.source.TileVector({
-    format: new ol.format.GeoJSON({
-    }),
-    url: "/test.cgi?x={x}&y={y}&zoom={z}&tilesize=1024&srs=3857",
-    tileGrid: new ol.tilegrid.XYZ({
-      maxZoom: 17,
-      tileSize: 1024
-    }),
-  });
-
-  vector_layer = new ol.layer.Vector({
-    source: tile_source,
-    style: styleFunction
-  });
-
-  map = new ol.Map({
-    target: 'map',
-    layers: [
-      new ol.layer.Tile({
-        source: new ol.source.OSM()
-      }),
-      vector_layer
-    ],
-    view: new ol.View({
-      center: ol.proj.transform([16.41, 48.20], 'EPSG:4326', 'EPSG:3857'),
-      zoom: 16
-    })
-  });
-
-  map.on('singleclick', map_click);
-}
-
-window.onload = init;
