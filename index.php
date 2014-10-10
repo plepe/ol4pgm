@@ -14,6 +14,6 @@
   <body>
     <h2>My Map</h2>
     <div id="map" class="map"></div>
-    <script type="text/javascript" src="index.js"></script>
+    <script type="text/javascript" src="ol4pgm.js"></script>
   </body>
 </html>

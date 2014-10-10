@@ -90,18 +90,18 @@ function styleFunction(feature, resolution) {
 function map_click(e) {
   var pixel = map.getEventPixel(e.originalEvent);
 
-  var feature_list = {};
+  var feature_list = [];
 
   map.forEachFeatureAtPixel(pixel, function (feature, layer) {
     if (layer.get("visible") == true){ // Is the current layer visible ?
       var id = feature.getProperties()['osm:id'];
 
       if(!feature_list[id])
-        feature_list[id] = feature.getProperties();
+        feature_list.push(id);
     }
   });
 
-  // alert(feature_list);
+  alert(JSON.stringify(feature_list));
 }
 
 function init() {
@@ -134,7 +134,7 @@ function init() {
     })
   });
 
-  // map.on('singleclick', map_click);
+  map.on('singleclick', map_click);
 }
 
 window.onload = init;
