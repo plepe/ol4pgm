@@ -67,6 +67,17 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
     }
 
     // style-element "casing"
+    if((result['width']) && (result['casing-dashes-background-color'])) {
+      styles.push(new ol.style.Style({
+        "zIndex": parseFloat(result['line-layer'] || result['layer']) * 100000 + 30000 + parseFloat(result['line-z-index'] || result['z-index']),
+        "stroke": get_style('stroke', {
+          "color": result['casing-dashes-background-color'],
+          "width": result['final-casing-width'],
+          "lineCap": result['casing-linecap'],
+          "lineJoin": result['casing-linejoin'],
+          "miterLimit": result['casing-miterlimit']
+      })}));
+    }
     if(result['casing-width']) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['casing-layer'] || result['layer']) * 100000 + 10000 + parseFloat(result['casing-z-index'] || result['z-index']),
@@ -81,6 +92,17 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
     }
 
     // style-element "line"
+    if((result['width']) && (result['dashes-background-color'])) {
+      styles.push(new ol.style.Style({
+        "zIndex": parseFloat(result['line-layer'] || result['layer']) * 100000 + 30000 + parseFloat(result['line-z-index'] || result['z-index']),
+        "stroke": get_style('stroke', {
+          "color": result['dashes-background-color'],
+          "width": result['width'],
+          "lineCap": result['linecap'],
+          "lineJoin": result['linejoin'],
+          "miterLimit": result['miterlimit']
+      })}));
+    }
     if(result['width']) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['line-layer'] || result['layer']) * 100000 + 30000 + parseFloat(result['line-z-index'] || result['z-index']),
