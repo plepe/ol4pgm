@@ -2,7 +2,7 @@ var map;
 
 function init() {
   layer = new ol4pgmLayer({
-    url: "/test.cgi?x={x}&y={y}&zoom={z}&tilesize=1024&srs=3857",
+    url: "test.cgi?x={x}&y={y}&z={z}&tilesize=1024&srs=3857",
     maxZoom: 17,
     tileSize: 1024
   });
