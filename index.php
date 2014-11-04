@@ -9,6 +9,13 @@
       }
     </style>
     <script src="http://openlayers.org/en/v3.0.0/build/ol.js" type="text/javascript"></script>
+    <script type="text/javascript">
+var param = "";
+<?php
+if(isset($_REQUEST['lang']))
+  print "param += \"&lang=".$_REQUEST['lang']."\";\n";
+?>
+    </script>
     <title>OpenLayers 3 for pgmapcss example</title>
   </head>
   <body>
