@@ -34,6 +34,7 @@ function ol4pgmLayer(options, map) {
   this.map = map;
 
   this.map.addLayer(this.layer);
+  this.map.on('singleclick', this.map_click.bind(this));
 }
 
 function get_style(type, params) {
@@ -166,20 +167,20 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
 }
 
 // from https://groups.google.com/forum/#!topic/ol3-dev/YWJHcKC6-O8
-function map_click(e) {
-  return;
-  var pixel = map.getEventPixel(e.originalEvent);
+ol4pgmLayer.prototype.map_click = function(e) {
+  var pixel = this.map.getEventPixel(e.originalEvent);
 
   var feature_list = [];
 
-  map.forEachFeatureAtPixel(pixel, function (feature, layer) {
-    if (layer.get("visible") == true){ // Is the current layer visible ?
+  this.map.forEachFeatureAtPixel(pixel, function (feature, layer) {
+    // Is the layer me and am I visible ?
+    if ((layer == this.layer) && (layer.get("visible") == true)) {
       var id = feature.getProperties()['osm:id'];
 
       if(!feature_list[id])
         feature_list.push(id);
     }
-  });
+  }.bind(this));
 
   alert(JSON.stringify(feature_list));
 }
