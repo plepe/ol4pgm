@@ -1,6 +1,6 @@
 var cached_styles = {}
 
-function ol4pgmLayer(options) {
+function ol4pgmLayer(options, map) {
   this.options = options;
 
   this.source = new ol.source.TileVector({
@@ -30,6 +30,10 @@ function ol4pgmLayer(options) {
     source: this.source,
     style: this.styleFunction.bind(this)
   });
+
+  this.map = map;
+
+  this.map.addLayer(this.layer);
 }
 
 function get_style(type, params) {
