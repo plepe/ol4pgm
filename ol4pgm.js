@@ -52,6 +52,7 @@ function ol4pgmLayer(options, map) {
   }.bind(this, closer);
 
   this.overlay_content = document.createElement("div");
+  this.overlay_content.className = "content";
   this.overlay_div.appendChild(this.overlay_content);
 
   this.overlay = new ol.Overlay({
@@ -219,6 +220,7 @@ ol4pgmLayer.prototype.map_click = function(e) {
   if(popup_txt != '') {
     this.overlay_content.innerHTML = popup_txt;
     this.overlay_div.style.display = "block";
+    this.overlay_content.scrollTop = 0;
     this.overlay.setPosition(e.coordinate);
   }
 }
