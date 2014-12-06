@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="ol4pgm.css" type="text/css">
     <style>
       .map {
         height: 400px;

@@ -35,6 +35,30 @@ function ol4pgmLayer(options, map) {
 
   this.map.addLayer(this.layer);
   this.map.on('singleclick', this.map_click.bind(this));
+
+  // create popup template
+  this.overlay_div = document.createElement("div");
+  this.overlay_div.className = "ol4pgm-popup";
+
+  var closer = document.createElement("a");
+  closer.className = "ol4pgm-popup-closer";
+  closer.href = "#";
+  this.overlay_div.appendChild(closer);
+
+  closer.onclick = function(closer) {
+    this.overlay_div.style.display = "none";
+    closer.blur();
+    return false;
+  }.bind(this, closer);
+
+  this.overlay_content = document.createElement("div");
+  this.overlay_div.appendChild(this.overlay_content);
+
+  this.overlay = new ol.Overlay({
+    element: this.overlay_div
+  });
+
+  this.map.addOverlay(this.overlay);
 }
 
 function get_style(type, params) {
@@ -175,12 +199,25 @@ ol4pgmLayer.prototype.map_click = function(e) {
   this.map.forEachFeatureAtPixel(pixel, function (feature, layer) {
     // Is the layer me and am I visible ?
     if ((layer == this.layer) && (layer.get("visible") == true)) {
-      var id = feature.getProperties()['osm:id'];
+      if (feature.getProperties()['results']) {
+        for (var i=0; i<feature.getProperties()['results'].length; i++) {
+          var result = feature.getProperties()['results'][i];
 
-      if(!feature_list[id])
-        feature_list.push(id);
+          if((result['popup-title']) || (result['popup-body'])) {
+            var txt = '';
+
+            if(result['popup-title'])
+              txt += '<div class="title">' + result['popup-title'] + '</div>';
+
+            if(result['popup-body'])
+              txt += '<div class="body">' + result['popup-body'] + '</div>';
+
+            this.overlay_content.innerHTML = txt;
+            this.overlay_div.style.display = "block";
+            this.overlay.setPosition(e.coordinate);
+          }
+        }
+      }
     }
   }.bind(this));
-
-  alert(JSON.stringify(feature_list));
 }
