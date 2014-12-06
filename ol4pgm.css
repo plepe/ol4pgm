@@ -10,6 +10,7 @@
   border: 1px solid #cccccc;
   bottom: 12px;
   left: -50px;
+  width: 250px;
 }
 .ol4pgm-popup:after, .ol4pgm-popup:before {
   top: 100%;
@@ -43,4 +44,8 @@
 }
 .ol4pgm-popup .title {
   font-weight: bold;
+  font-size: 12pt;
+}
+.ol4pgm-popup .body {
+  font-size: 10pt;
 }

@@ -192,6 +192,7 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
 
 // from https://groups.google.com/forum/#!topic/ol3-dev/YWJHcKC6-O8
 ol4pgmLayer.prototype.map_click = function(e) {
+  var popup_txt = '';
   var pixel = this.map.getEventPixel(e.originalEvent);
 
   var feature_list = [];
@@ -204,20 +205,20 @@ ol4pgmLayer.prototype.map_click = function(e) {
           var result = feature.getProperties()['results'][i];
 
           if((result['popup-title']) || (result['popup-body'])) {
-            var txt = '';
-
             if(result['popup-title'])
-              txt += '<div class="title">' + result['popup-title'] + '</div>';
+              popup_txt += '<div class="title">' + result['popup-title'] + '</div>';
 
             if(result['popup-body'])
-              txt += '<div class="body">' + result['popup-body'] + '</div>';
-
-            this.overlay_content.innerHTML = txt;
-            this.overlay_div.style.display = "block";
-            this.overlay.setPosition(e.coordinate);
+              popup_txt += '<div class="body">' + result['popup-body'] + '</div>';
           }
         }
       }
     }
   }.bind(this));
+
+  if(popup_txt != '') {
+    this.overlay_content.innerHTML = popup_txt;
+    this.overlay_div.style.display = "block";
+    this.overlay.setPosition(e.coordinate);
+  }
 }
