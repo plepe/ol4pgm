@@ -62,6 +62,22 @@ function ol4pgmLayer(options, map) {
   this.map.addOverlay(this.overlay);
 }
 
+ol4pgmLayer.prototype.getFeaturesInExtent = function(bbox=null) {
+  var ret = [];
+
+  if(!bbox)
+    bbox = this.map.getView().calculateExtent(map.getSize());
+
+  // TODO: this.source.forEachFeature ??? (does not work)
+  var all_features = this.source.getFeatures();
+  for(var i=0; i<all_features.length; i++) {
+    if(ol.extent.intersects(bbox, all_features[i].getGeometry().getExtent()))
+      ret.push(all_features[i]);
+  }
+
+  return ret;
+}
+
 function get_style(type, params) {
   var id = type;
   for (var k in params) {
