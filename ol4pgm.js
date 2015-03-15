@@ -94,6 +94,18 @@ function get_style(type, params) {
   return cached_styles[id];
 }
 
+function ol3color(color) {
+  var m;
+
+  if(m = color.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i))
+    return [ parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16), 1.0 ];
+
+  if(m = color.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i))
+    return [ parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16), parseInt(m[4], 16) / 255 ];
+
+  return [ 0, 0, 0, 1.0 ];
+}
+
 ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
   styles = [];
 
@@ -108,7 +120,7 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['fill-layer'] || result['layer']) * 100000 + 00000 + parseFloat(result['fill-z-index'] || result['z-index']),
         "fill": get_style('fill', {
-          "color": result['fill-color']
+          "color": ol3color(result['fill-color'])
       })}));
     }
 
@@ -117,7 +129,7 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['line-layer'] || result['layer']) * 100000 + 30000 + parseFloat(result['line-z-index'] || result['z-index']),
         "stroke": get_style('stroke', {
-          "color": result['casing-dashes-background-color'],
+          "color": ol3color(result['casing-dashes-background-color']),
           "width": result['final-casing-width'],
           "lineCap": result['casing-linecap'],
           "lineJoin": result['casing-linejoin'],
@@ -128,7 +140,7 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['casing-layer'] || result['layer']) * 100000 + 10000 + parseFloat(result['casing-z-index'] || result['z-index']),
         "stroke": get_style('stroke', {
-          "color": result['casing-color'],
+          "color": ol3color(result['casing-color']),
           "width": result['final-casing-width'],
           "lineCap": result['casing-linecap'],
           "lineJoin": result['casing-linejoin'],
@@ -142,7 +154,7 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['line-layer'] || result['layer']) * 100000 + 30000 + parseFloat(result['line-z-index'] || result['z-index']),
         "stroke": get_style('stroke', {
-          "color": result['dashes-background-color'],
+          "color": ol3color(result['dashes-background-color']),
           "width": result['width'],
           "lineCap": result['linecap'],
           "lineJoin": result['linejoin'],
@@ -153,7 +165,7 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['line-layer'] || result['layer']) * 100000 + 30000 + parseFloat(result['line-z-index'] || result['z-index']),
         "stroke": get_style('stroke', {
-          "color": result['color'],
+          "color": ol3color(result['color']),
           "width": result['width'],
           "lineCap": result['linecap'],
           "lineJoin": result['linejoin'],
@@ -194,10 +206,10 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
                           (parseFloat(result['text-offset']) < 0 ? "bottom" :
                            "middle")),
           "fill": get_style('fill', {
-            color: result['text-color']
+            color: ol3color(result['text-color'])
           }),
           "stroke": get_style('stroke', {
-            color: result['text-halo-color'],
+            color: ol3color(result['text-halo-color']),
             width: parseFloat(result['text-halo-radius']) * 3,
           })
       })}));
