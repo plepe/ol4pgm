@@ -71,7 +71,7 @@ ol4pgmLayer.prototype.getFeaturesInExtent = function(bbox=null) {
   // TODO: this.source.forEachFeature ??? (does not work)
   var all_features = this.source.getFeatures();
   for(var i=0; i<all_features.length; i++) {
-    if(ol.extent.intersects(bbox, all_features[i].getGeometry().getExtent()))
+    if(all_features[i].getGeometry().intersectsExtent(bbox))
       ret.push(all_features[i]);
   }
 
