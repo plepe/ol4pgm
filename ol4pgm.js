@@ -68,11 +68,21 @@ ol4pgmLayer.prototype.getFeaturesInExtent = function(bbox=null) {
   if(!bbox)
     bbox = this.map.getView().calculateExtent(map.getSize());
 
+  var done_features = {};
+
   // TODO: this.source.forEachFeature ??? (does not work)
   var all_features = this.source.getFeatures();
   for(var i=0; i<all_features.length; i++) {
-    if(all_features[i].getGeometry().intersectsExtent(bbox))
-      ret.push(all_features[i]);
+    var feature = all_features[i];
+
+    var id;
+    if((id = feature.get('osm:id')) && (id in done_features))
+      continue;
+
+    done_features[id] = true;
+
+    if(feature.getGeometry().intersectsExtent(bbox))
+      ret.push(feature);
   }
 
   return ret;
