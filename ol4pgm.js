@@ -62,7 +62,7 @@ function ol4pgmLayer(options, map) {
   this.map.addOverlay(this.overlay);
 }
 
-ol4pgmLayer.prototype.getFeaturesInExtent = function(bbox=null) {
+ol4pgmLayer.prototype.getFeaturesInExtent = function(bbox) {
   var ret = [];
 
   if(!bbox)
