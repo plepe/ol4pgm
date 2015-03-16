@@ -60,6 +60,11 @@ function ol4pgmLayer(options, map) {
   });
 
   this.map.addOverlay(this.overlay);
+
+  this.layer.on('change', function() {
+    if(this.onchange)
+      this.onchange();
+  }.bind(this));
 }
 
 ol4pgmLayer.prototype.getFeaturesInExtent = function(bbox) {
