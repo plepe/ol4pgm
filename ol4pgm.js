@@ -229,6 +229,27 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
   return styles;
 }
 
+ol4pgmLayer.prototype.featuresAtPixel = function(pixel) {
+  var list = {};
+
+  this.map.forEachFeatureAtPixel(pixel, function (list, feature, layer) {
+    if(layer != this.layer)
+      return;
+
+    var id;
+    if((id = feature.get('osm:id')) && (id in list))
+      return;
+
+    list[id] = feature;
+  }.bind(this, list));
+
+  var ret = [];
+  for(var k in list)
+    ret.push(list[k]);
+
+  return ret;
+}
+
 // from https://groups.google.com/forum/#!topic/ol3-dev/YWJHcKC6-O8
 ol4pgmLayer.prototype.map_click = function(e) {
   var popup_txt = '';
