@@ -71,6 +71,53 @@ ol4pgmLayer.prototype.getFeatures = function() {
   return this.source.getFeatures();
 }
 
+ol4pgmLayer.prototype.getFeature = function(id, callback) {
+  var all_features = this.source.getFeatures();
+  for(var i = 0; i < all_features.length; i++) {
+    var feature = all_features[i];
+
+    if(feature.getProperties()['osm:id'] == id) {
+      callback(feature);
+      return;
+    }
+  }
+
+  // Can't load additional features per XMLHttpRequest call
+  if(!'single_url' in this.options)
+    return;
+
+  var url = this.options.single_url;
+  url = url.replace("{id}", id);
+  url = url.replace("{zoom}", this.map.getView().getZoom());
+
+  var req = new XMLHttpRequest();
+  req.onreadystatechange = function(id, callback, req) {
+    if(req.readyState == 4) {
+      var data = JSON.parse(req.responseText);
+      if(!data) {
+        alert("ol4pgm: can't parse result JSON");
+      }
+
+      for(var i = 0; i < data.features.length; i++) {
+        var feature = data.features[i];
+
+        if(feature.properties['osm:id'] == id) {
+          var reader = new ol.format.GeoJSON();
+          feature = reader.readFeature(feature);
+
+          callback(feature);
+          return;
+        }
+      }
+
+      callback(null);
+    }
+  }.bind(this, id, callback, req);
+
+  req.open("get", url, true);
+  req.send();
+}
+
 ol4pgmLayer.prototype.getFeaturesInExtent = function(bbox) {
   var ret = [];
 
