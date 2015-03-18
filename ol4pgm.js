@@ -67,6 +67,10 @@ function ol4pgmLayer(options, map) {
   }.bind(this));
 }
 
+ol4pgmLayer.prototype.getFeatures = function() {
+  return this.source.getFeatures();
+}
+
 ol4pgmLayer.prototype.getFeaturesInExtent = function(bbox) {
   var ret = [];
 
