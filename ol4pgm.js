@@ -28,7 +28,8 @@ function ol4pgmLayer(options, map) {
 
   this.layer = new ol.layer.Vector({
     source: this.source,
-    style: this.styleFunction.bind(this)
+    style: this.styleFunction.bind(this),
+    visible: 'visible' in this.options ? this.options.visible : true
   });
 
   this.map = map;
@@ -65,6 +66,14 @@ function ol4pgmLayer(options, map) {
     if(this.onchange)
       this.onchange();
   }.bind(this));
+}
+
+ol4pgmLayer.prototype.setVisible= function(visible) {
+  this.layer.setVisible(visible);
+}
+
+ol4pgmLayer.prototype.getVisible= function(visible) {
+  return this.layer.getVisible();
 }
 
 ol4pgmLayer.prototype.getFeatures = function() {

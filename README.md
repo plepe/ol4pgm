@@ -23,3 +23,4 @@ minZoom | ol.tilegrid.XYZ -> minZoom
 maxZoom | ol.tilegrid.XYZ -> maxZoom
 extent | ol.tilegrid.XYZ -> extent
 tileSize | ol.tilegrid.XYZ -> tileSize
+visible | visibility of layer (default: true)
