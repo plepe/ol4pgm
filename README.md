@@ -47,6 +47,7 @@ maxZoom | ol.tilegrid.XYZ -> maxZoom
 extent | ol.tilegrid.XYZ -> extent
 tileSize | ol.tilegrid.XYZ -> tileSize
 visible | visibility of layer (default: true)
+icons_parent_path | parent path of icons (e.g. icons/), default ''
 
 Functions
 =========

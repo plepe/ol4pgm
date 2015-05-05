@@ -32,6 +32,9 @@ function ol4pgmLayer(options, map) {
     visible: 'visible' in this.options ? this.options.visible : true
   });
 
+  if(!this.options.icons_parent_path)
+      this.options.icons_parent_path = "";
+
   this.map = map;
 
   this.map.addLayer(this.layer);
@@ -254,7 +257,7 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['point-layer'] || result['layer']) * 400000 + 30000 + parseFloat(result['point-z-index'] || result['z-index']),
         "image": new ol.style.Icon({
-          "src": escape(result['final-icon-image']),
+          "src": this.options.icons_parent_path + escape(result['final-icon-image']),
           "rotation": parseFloat(result['icon-rotation']) * (Math.PI / 180.0)
       })}));
     }
@@ -263,7 +266,7 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
       styles.push(new ol.style.Style({
         "zIndex": parseFloat(result['point-layer'] || result['layer']) * 400000 + 30000 + parseFloat(result['point-z-index'] || result['z-index']),
         "image": new ol.style.Icon({
-          "src": escape(result['final-symbol-image']),
+          "src": this.options.icons_parent_path + escape(result['final-symbol-image']),
           "rotation": parseFloat(result['symbol-rotation']) * (Math.PI / 180.0)
       })}));
     }
