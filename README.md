@@ -5,6 +5,8 @@ Compile mapcss stylesheet
 pgmapcss --mode standalone -tol4pgm-0.1 test.mapcss
 ```
 
+Make sure, that 'test.py' is executed as CGI script.
+
 In your JavaScript, load map and layer:
 ```js
 var map = new ol.Map({
