@@ -1,0 +1,10 @@
+node[amenity=restaurant] {
+  text: name;
+  icon-image: restaurant;
+  popup-title: tag('name');
+  popup-body: concat('Cuisine: ', tag('cuisine'));
+}
+way[highway] {
+    width: 2;
+    color: red;
+}

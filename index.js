@@ -15,7 +15,7 @@ function init() {
   });
 
   layer = new ol4pgmLayer({
-    url: "test.cgi?x={x}&y={y}&z={z}&format=geojson-separate&tilesize=1024&srs=3857" + param,
+    url: "test.py?x={x}&y={y}&z={z}&tilesize=1024&srs=3857" + param,
     maxZoom: 17,
     tileSize: 1024
   }, map);
