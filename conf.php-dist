@@ -4,3 +4,5 @@ $map_location = array(
   "lon" => 16.372,
   "zoom" => 15
 );
+
+$title = "OL4PGM demo page";

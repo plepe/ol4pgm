@@ -38,7 +38,7 @@ if(isset($_REQUEST['lang']))
   print "param += \"&lang=".$_REQUEST['lang']."\";\n";
 ?>
     </script>
-    <title>OpenLayers 3 for pgmapcss example</title>
+    <title><?php print $title; ?></title>
   </head>
   <body>
     <div id="map" class="map"></div>
