@@ -17,6 +17,16 @@ Header("Content-Type: text/html; charset=utf-8");
     </style>
     <script src="http://openlayers.org/en/v3.0.0/build/ol.js" type="text/javascript"></script>
     <script type="text/javascript">
+<?php
+$map_location = array("lat" => 48.20, "lon" => 16.41, "zoom" => 16);
+if($_REQUEST['lat'])
+  $map_location['lat'] = (float)$_REQUEST['lat'];
+if($_REQUEST['lon'])
+  $map_location['lon'] = (float)$_REQUEST['lon'];
+if($_REQUEST['lat'])
+  $map_location['zoom'] = (int)$_REQUEST['zoom'];
+print "var map_location = " . json_encode($map_location) . ";\n";
+?>
 var param = "";
 <?php
 if(isset($_REQUEST['lang']))

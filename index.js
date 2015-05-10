@@ -9,8 +9,8 @@ function init() {
       })
     ],
     view: new ol.View({
-      center: ol.proj.transform([16.41, 48.20], 'EPSG:4326', 'EPSG:3857'),
-      zoom: 16
+      center: ol.proj.transform([map_location.lon, map_location.lat], 'EPSG:4326', 'EPSG:3857'),
+      zoom: map_location.zoom
     })
   });
 
