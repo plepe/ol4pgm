@@ -10,6 +10,7 @@ else {
 <!doctype html>
 <html lang="en">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
     <link rel="stylesheet" href="http://openlayers.org/en/v3.0.0/css/ol.css" type="text/css">
     <link rel="stylesheet" href="ol4pgm.css" type="text/css">
     <style>
