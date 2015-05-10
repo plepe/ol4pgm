@@ -1,0 +1,6 @@
+<?php
+$map_location = array(
+  "lat" => 48.210,
+  "lon" => 16.372,
+  "zoom" => 15
+);
