@@ -31,6 +31,7 @@ if($_REQUEST['lon'])
 if($_REQUEST['lat'])
   $map_location['zoom'] = (int)$_REQUEST['zoom'];
 print "var map_location = " . json_encode($map_location) . ";\n";
+print "var cgi_url = ". json_encode($cgi_url) . ";\n";
 ?>
 var param = "";
 <?php

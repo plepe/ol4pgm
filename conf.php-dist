@@ -6,3 +6,5 @@ $map_location = array(
 );
 
 $title = "OL4PGM demo page";
+
+$cgi_url = "test.py?x={x}&y={y}&z={z}&tilesize=1024&srs=3857";
