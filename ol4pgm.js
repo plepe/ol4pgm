@@ -71,6 +71,10 @@ function ol4pgmLayer(options, map) {
   }.bind(this));
 }
 
+ol4pgmLayer.prototype.getState = function() {
+  return this.source.getState();
+}
+
 ol4pgmLayer.prototype.setVisible= function(visible) {
   this.layer.setVisible(visible);
 }
