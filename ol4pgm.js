@@ -32,6 +32,8 @@ function ol4pgmLayer(options, map) {
     visible: 'visible' in this.options ? this.options.visible : true
   });
 
+  this.rendered_features = {};
+
   if(!this.options.icons_parent_path)
       this.options.icons_parent_path = "";
 
@@ -68,6 +70,11 @@ function ol4pgmLayer(options, map) {
   this.layer.on('change', function() {
     if(this.onchange)
       this.onchange();
+  }.bind(this));
+
+  // a new render job begins
+  this.layer.on('render', function() {
+    this.rendered_features = {};
   }.bind(this));
 }
 
@@ -189,6 +196,12 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
 
   if(!feature.get("results"))
     return [];
+
+  // make sure, that a feature is only rendered once
+  var id = feature.getProperties()['osm:id'];
+  if(id in this.rendered_features)
+    return [];
+  this.rendered_features[id] = true;
 
   for(i = 0; i < feature.get("results").length; i++) {
     result = feature.get("results")[i]
