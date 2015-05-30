@@ -1,0 +1,10 @@
+<?php
+$map_location = array(
+  "lat" => 48.210,
+  "lon" => 16.372,
+  "zoom" => 15
+);
+
+$title = "OL4PGM demo page";
+
+$cgi_url = "test.py?x={x}&y={y}&z={z}&tilesize=1024&srs=3857";
