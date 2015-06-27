@@ -41,6 +41,11 @@ function ol4pgmLayer(options, map) {
     visible: 'visible' in this.options ? this.options.visible : true
   });
 
+  this.format = new ol.format.GeoJSON({
+    defaultDataProjection: this.options.defaultDataProjection,
+    geometryName: this.options.geometryName
+  });
+
   this.rendered_features = {};
   this.ajax_requests = [];
 
@@ -99,7 +104,7 @@ ol4pgmLayer.prototype.load = function(url, callback) {
       // remove req from ajax_requests array
       this.ajax_requests.splice(this.ajax_requests.indexOf(req));
 
-      callback(new ol.format.GeoJSON().readFeatures(req.responseText));
+      callback(this.format.readFeatures(req.responseText));
     }
   }.bind(this, url, callback, req);
 
