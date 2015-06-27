@@ -30,11 +30,8 @@ function ol4pgmLayer(options, map) {
     projection: this.options.projection,
     tileGrid: this.options.tileGrid,
     tileUrlFunction: this.options.tileUrlFunction,
+    tileLoadFunction: this.load.bind(this),
     urls: this.options.urls,
-    format: new ol.format.GeoJSON({
-      defaultDataProjection: this.options.defaultDataProjection,
-      geometryName: this.options.geometryName
-    }),
     tileGrid: tilegrid,
   });
 
@@ -88,6 +85,18 @@ function ol4pgmLayer(options, map) {
   this.layer.on('render', function() {
     this.rendered_features = {};
   }.bind(this));
+}
+
+ol4pgmLayer.prototype.load = function(url, callback) {
+  var req = new XMLHttpRequest();
+  req.onreadystatechange = function(url, callback, req) {
+    if(req.readyState == 4) {
+      callback(new ol.format.GeoJSON().readFeatures(req.responseText));
+    }
+  }.bind(this, url, callback, req);
+
+  req.open("get", url, true);
+  req.send();
 }
 
 ol4pgmLayer.prototype.getState = function() {
