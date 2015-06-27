@@ -4,7 +4,7 @@ function ol4pgmLayer(options, map) {
   this.options = options;
 
   if(ol.tilegrid.createXYZ) {
-    var tilegrid = ol.tilegrid.createXYZ({
+    this.tilegrid = ol.tilegrid.createXYZ({
           minZoom: this.options.minZoom,
           maxZoom: this.options.maxZoom,
           extent: this.options.extent,
@@ -12,7 +12,7 @@ function ol4pgmLayer(options, map) {
         });
   }
   else {
-    var tilegrid = new ol.tilegrid.XYZ({
+    this.tilegrid = new ol.tilegrid.XYZ({
           minZoom: this.options.minZoom,
           maxZoom: this.options.maxZoom,
           extent: this.options.extent,
@@ -32,7 +32,7 @@ function ol4pgmLayer(options, map) {
     tileUrlFunction: this.options.tileUrlFunction,
     tileLoadFunction: this.load.bind(this),
     urls: this.options.urls,
-    tileGrid: tilegrid,
+    tileGrid: this.tilegrid,
   });
 
   this.layer = new ol.layer.Vector({
