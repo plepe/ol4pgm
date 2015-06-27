@@ -42,6 +42,7 @@ function ol4pgmLayer(options, map) {
   });
 
   this.rendered_features = {};
+  this.ajax_requests = [];
 
   if(!this.options.icons_parent_path)
       this.options.icons_parent_path = "";
@@ -87,16 +88,28 @@ function ol4pgmLayer(options, map) {
   }.bind(this));
 }
 
+ol4pgmLayer.prototype.is_loading = function() {
+  return !!this.ajax_requests.length;
+}
+
 ol4pgmLayer.prototype.load = function(url, callback) {
   var req = new XMLHttpRequest();
   req.onreadystatechange = function(url, callback, req) {
     if(req.readyState == 4) {
+      // remove req from ajax_requests array
+      this.ajax_requests.splice(this.ajax_requests.indexOf(req));
+
       callback(new ol.format.GeoJSON().readFeatures(req.responseText));
     }
   }.bind(this, url, callback, req);
 
   req.open("get", url, true);
   req.send();
+
+  this.ajax_requests.push(req);
+
+  if(this.onchange)
+    this.onchange();
 }
 
 ol4pgmLayer.prototype.getState = function() {
