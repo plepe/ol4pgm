@@ -48,6 +48,8 @@ function ol4pgmLayer(options, map) {
 
   this.rendered_features = {};
   this.ajax_requests = [];
+  this.failed_requests = [];
+  window.setInterval(this.retry_requests.bind(this), 2000);
 
   if(!this.options.icons_parent_path)
       this.options.icons_parent_path = "";
@@ -104,7 +106,13 @@ ol4pgmLayer.prototype.load = function(url, callback) {
       // remove req from ajax_requests array
       this.ajax_requests.splice(this.ajax_requests.indexOf(req));
 
-      callback(this.format.readFeatures(req.responseText));
+      if((req.status == 404) && (req.statusText == "Not rendered yet")) {
+        this.failed_requests.push([ url, callback ]);
+        return;
+      }
+
+      var features = this.format.readFeatures(req.responseText);
+      callback(features);
     }
   }.bind(this, url, callback, req);
 
@@ -115,6 +123,14 @@ ol4pgmLayer.prototype.load = function(url, callback) {
 
   if(this.onchange)
     this.onchange();
+}
+
+ol4pgmLayer.prototype.retry_requests = function() {
+  var retry_requests = this.failed_requests.splice(0, 4);
+
+  for(var i = 0; i < retry_requests.length; i++) {
+    this.load(retry_requests[i][0], retry_requests[i][1]);
+  }
 }
 
 ol4pgmLayer.prototype.getState = function() {
