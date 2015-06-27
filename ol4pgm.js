@@ -3,6 +3,23 @@ var cached_styles = {}
 function ol4pgmLayer(options, map) {
   this.options = options;
 
+  if(ol.tilegrid.createXYZ) {
+    var tilegrid = ol.tilegrid.createXYZ({
+          minZoom: this.options.minZoom,
+          maxZoom: this.options.maxZoom,
+          extent: this.options.extent,
+          tileSize: this.options.tileSize
+        });
+  }
+  else {
+    var tilegrid = new ol.tilegrid.XYZ({
+          minZoom: this.options.minZoom,
+          maxZoom: this.options.maxZoom,
+          extent: this.options.extent,
+          tileSize: this.options.tileSize
+        });
+  }
+
   this.source = new ol.source.TileVector({
     url: this.options.url,
     attributions: this.options.attributions,
@@ -18,12 +35,7 @@ function ol4pgmLayer(options, map) {
       defaultDataProjection: this.options.defaultDataProjection,
       geometryName: this.options.geometryName
     }),
-    tileGrid: new ol.tilegrid.XYZ({
-      minZoom: this.options.minZoom,
-      maxZoom: this.options.maxZoom,
-      extent: this.options.extent,
-      tileSize: this.options.tileSize
-    }),
+    tileGrid: tilegrid,
   });
 
   this.layer = new ol.layer.Vector({
