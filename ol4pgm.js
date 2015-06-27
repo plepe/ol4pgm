@@ -106,7 +106,7 @@ ol4pgmLayer.prototype.load = function(url, callback) {
       // remove req from ajax_requests array
       this.ajax_requests.splice(this.ajax_requests.indexOf(req));
 
-      if((req.status == 404) && (req.statusText == "Not rendered yet")) {
+      if((req.status == 200) && (req.statusText == "Not rendered yet")) {
         this.failed_requests.push([ url, callback ]);
         return;
       }
