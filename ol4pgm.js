@@ -96,7 +96,7 @@ function ol4pgmLayer(options, map) {
 }
 
 ol4pgmLayer.prototype.is_loading = function() {
-  return !!this.ajax_requests.length;
+  return !!(this.ajax_requests.length + this.still_required_requests().length);
 }
 
 ol4pgmLayer.prototype.load = function(url, callback) {
@@ -125,10 +125,48 @@ ol4pgmLayer.prototype.load = function(url, callback) {
     this.onchange();
 }
 
-ol4pgmLayer.prototype.retry_requests = function() {
-  var retry_requests = this.failed_requests.splice(0, 4);
+ol4pgmLayer.prototype.still_required_requests = function() {
+  // list of URLs of all tiles in current view
+  var urls = [];
 
+  // get the extent to find list of still required URLs
+  var extent = this.map.getView().calculateExtent(map.getSize());
+  var z = this.map.getView().getZoom() - 2;
+  var lt = this.tilegrid.getTileCoordForCoordAndZ([ extent[0], extent[1] ], z);
+  var rb = this.tilegrid.getTileCoordForCoordAndZ([ extent[2], extent[3] ], z);
+
+  for(var x = lt[1]; x <= rb[1]; x++)
+    for(var y = lt[2]; y <= rb[2]; y++) {
+      var url = this.options.url;
+      url = url.replace("{x}", x);
+      url = url.replace("{y}", - 1 - y);
+      url = url.replace("{z}", z);
+
+      urls.push(url);
+    }
+
+  // check which of the failed requests are still required
+  var still_required_requests = [];
+  for(var i = 0; i < this.failed_requests.length; i++) {
+    var m;
+    if((m = urls.indexOf(this.failed_requests[i][0])) != -1) {
+      still_required_requests.push(this.failed_requests[i]);
+    }
+  }
+
+  return still_required_requests;
+}
+
+ol4pgmLayer.prototype.retry_requests = function() {
+  var still_required_requests = this.still_required_requests();
+
+  // use the first of the still required requests, push others back
+  // into failed_requests
+  var retry_requests = still_required_requests.splice(0, 2);
+
+  // now re-request these URLs
   for(var i = 0; i < retry_requests.length; i++) {
+    this.failed_requests.splice(this.failed_requests.indexOf(retry_requests[i], 1));
     this.load(retry_requests[i][0], retry_requests[i][1]);
   }
 }
