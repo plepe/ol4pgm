@@ -242,8 +242,12 @@ ol4pgmLayer.prototype.getFeaturesInExtent = function(bbox) {
 
   var done_features = {};
 
-  // TODO: this.source.forEachFeature ??? (does not work)
-  var all_features = this.source.getFeatures();
+  if(!this.source.getFeaturesInExtentAtResolution) {
+    console.log("ol4pgm: ol.source.TileVector::getFeaturesInExtentAtResolution() not defined, using getFeaturesInExtent() instead");
+    this.source.getFeaturesInExtentAtResolution = this.source.getFeaturesInExtent;
+  }
+
+  var all_features = this.source.getFeaturesInExtentAtResolution(bbox, this.map.getView().getResolution());
   for(var i=0; i<all_features.length; i++) {
     var feature = all_features[i];
 
@@ -253,8 +257,7 @@ ol4pgmLayer.prototype.getFeaturesInExtent = function(bbox) {
 
     done_features[id] = true;
 
-    if(feature.getGeometry().intersectsExtent(bbox))
-      ret.push(feature);
+    ret.push(feature);
   }
 
   return ret;
