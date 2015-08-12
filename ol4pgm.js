@@ -321,10 +321,10 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
         "zIndex": parseFloat(result['line-layer'] || result['layer']) * 100000 + 30000 + parseFloat(result['line-z-index'] || result['z-index']),
         "stroke": get_style('stroke', {
           "color": ol3color(result['casing-dashes-background-color']),
-          "width": result['final-casing-width'],
+          "width": parseFloat(result['final-casing-width']),
           "lineCap": result['casing-linecap'],
           "lineJoin": result['casing-linejoin'],
-          "miterLimit": result['casing-miterlimit']
+          "miterLimit": parseFloat(result['casing-miterlimit'])
       })}));
     }
     if(result['casing-width']) {
@@ -332,11 +332,11 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
         "zIndex": parseFloat(result['casing-layer'] || result['layer']) * 100000 + 10000 + parseFloat(result['casing-z-index'] || result['z-index']),
         "stroke": get_style('stroke', {
           "color": ol3color(result['casing-color']),
-          "width": result['final-casing-width'],
+          "width": parseFloat(result['final-casing-width']),
           "lineCap": result['casing-linecap'],
           "lineJoin": result['casing-linejoin'],
           "lineDash": (result['casing-dashes'] == "none") ? null : result['casing-dashes'].split(","),
-          "miterLimit": result['casing-miterlimit']
+          "miterLimit": parseFloat(result['casing-miterlimit'])
       })}));
     }
 
@@ -346,10 +346,10 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
         "zIndex": parseFloat(result['line-layer'] || result['layer']) * 100000 + 30000 + parseFloat(result['line-z-index'] || result['z-index']),
         "stroke": get_style('stroke', {
           "color": ol3color(result['dashes-background-color']),
-          "width": result['width'],
+          "width": parseFloat(result['width']),
           "lineCap": result['linecap'],
           "lineJoin": result['linejoin'],
-          "miterLimit": result['miterlimit']
+          "miterLimit": parseFloat(result['miterlimit'])
       })}));
     }
     if(result['width']) {
@@ -357,11 +357,11 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
         "zIndex": parseFloat(result['line-layer'] || result['layer']) * 100000 + 30000 + parseFloat(result['line-z-index'] || result['z-index']),
         "stroke": get_style('stroke', {
           "color": ol3color(result['color']),
-          "width": result['width'],
+          "width": parseFloat(result['width']),
           "lineCap": result['linecap'],
           "lineJoin": result['linejoin'],
           "lineDash": (result['dashes'] == "none") ? null : result['dashes'].split(","),
-          "miterLimit": result['miterlimit']
+          "miterLimit": parseFloat(result['miterlimit'])
       })}));
     }
 
@@ -391,7 +391,7 @@ ol4pgmLayer.prototype.styleFunction = function(feature, resolution) {
         "text": new ol.style.Text({
           "text": result['text'],
           "font": result['font-size'] + "px " + result['font-family'],
-          "offsetY": result['text-offset'],
+          "offsetY": parseFloat(result['text-offset']),
           "textAlign": result['text-anchor-horizontal'] == "middle" ? "center" : result['text-anchor-horizontal'],
           "textBaseline": (parseFloat(result['text-offset']) > 0 ? "top" :
                           (parseFloat(result['text-offset']) < 0 ? "bottom" :
